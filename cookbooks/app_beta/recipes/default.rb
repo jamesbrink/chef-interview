@@ -17,9 +17,16 @@ package 'redis-server'
 
 gem_package 'bundler'
 
-directory '/apps'
+directory '/apps' do
+  owner 'vagrant'
+  group 'vagrant'
+  action :create
+  mode 00774
+end
 
 deploy '/apps/beta' do
+  user 'vagrant'
+  group 'vagrant'
   repo 'https://github.com/liftopia/myInterview.git'
   migrate true
   migration_command 'bundle exec rake db:migrate'
@@ -28,18 +35,21 @@ deploy '/apps/beta' do
     Dir.chdir(release_path) do
       directory "/apps/beta/shared/config"
       directory "/apps/beta/shared/log"
+      directory "/apps/beta/shared/pids"
       cookbook_file "/apps/beta/shared/config/database.yml"
       system('bundle --deployment --path /tmp/bundles')
+      system('mysqladmin create my_interview_development || echo "Already Created"')
     end
   end
   before_restart do
     Dir.chdir(release_path) do
-      system('killall -9 ruby1.9.1')
-      system('mysqladmin create my_interview_development || echo "Already Created"')
+      Dir.entries('tmp/pids').each do |pid|
+        system("kill -9 `cat tmp/pids/#{pid}`") unless pid =~ /\.+/
+      end
     end
   end
 
-  restart_command 'bundle exec rackup -p 9293 -D'
+  restart_command 'bundle exec rackup -p 9293 -D -P ./tmp/pids/rack.pid'
 end
 
 user 'liftopian'
