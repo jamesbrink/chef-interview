@@ -24,7 +24,7 @@ directory '/apps' do
   mode 00774
 end
 
-deploy '/apps/beta' do
+deploy_revision '/apps/beta' do
   user 'vagrant'
   group 'vagrant'
   repo 'https://github.com/liftopia/myInterview.git'
@@ -44,7 +44,7 @@ deploy '/apps/beta' do
   before_restart do
     Dir.chdir(release_path) do
       Dir.entries('tmp/pids').each do |pid|
-        system("kill -9 `cat tmp/pids/#{pid}`") unless pid =~ /\.+/
+        system("kill -9 `cat tmp/pids/#{pid}`") unless pid =~ /^\.+$/
       end
     end
   end
