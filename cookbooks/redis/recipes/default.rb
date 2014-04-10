@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: app_alpha
+# Cookbook Name:: redis
 # Recipe:: default
 #
 # Copyright 2014, Liftopia

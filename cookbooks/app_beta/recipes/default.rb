@@ -16,8 +16,9 @@ require_recipe 'mongodb'
 require_recipe 'memcached'
 require_recipe 'mysql::server'
 
-package 'libsasl2-dev'
+p# TODO could be put into mysql recipe - mysql::client-dev?
 package 'libmysqlclient-dev'
+package 'libsasl2-dev'
 
 gem_package 'bundler'
 
@@ -48,7 +49,7 @@ deploy_revision '/apps/beta' do
       directory "/apps/beta/shared/log"
       directory "/apps/beta/shared/pids"
       cookbook_file "/apps/beta/shared/config/database.yml"
-      system('bundle --deployment --path /tmp/bundles')
+      system('bundle --deployment --path /var/tmp/bundles')
       system('mysqladmin create my_interview_development || echo "Already Created"')
     end
   end

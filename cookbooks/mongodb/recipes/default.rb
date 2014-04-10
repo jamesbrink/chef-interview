@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: app_alpha
+# Cookbook Name:: mongodb
 # Recipe:: default
 #
 # Copyright 2014, Liftopia

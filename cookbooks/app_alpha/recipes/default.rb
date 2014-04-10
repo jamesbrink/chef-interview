@@ -49,7 +49,7 @@ deploy_revision '/apps/alpha' do
       directory "/apps/alpha/shared/log"
       directory "/apps/alpha/shared/pids"
       cookbook_file "/apps/alpha/shared/config/database.yml"
-      system('bundle --deployment --path /tmp/bundles')
+      system('bundle --deployment --path /var/tmp/bundles')
       system('mysqladmin create my_interview_development || echo "Already Created"')
     end
   end
