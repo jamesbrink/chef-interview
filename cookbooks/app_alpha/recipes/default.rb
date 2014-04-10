@@ -8,12 +8,17 @@
 #
 #
 
-package 'ruby1.9.3'
-package 'libsasl2-dev'
+require_recipe 'ruby'
+require_recipe 'git'
+require_recipe 'nodejs'
+require_recipe 'redis'
+require_recipe 'mongodb'
+require_recipe 'memcached'
+require_recipe 'mysql::server'
+
+# TODO could be put into mysql recipe - mysql::client-dev?
 package 'libmysqlclient-dev'
-package 'nodejs'
-package 'mongodb'
-package 'redis-server'
+package 'libsasl2-dev'
 
 gem_package 'bundler'
 

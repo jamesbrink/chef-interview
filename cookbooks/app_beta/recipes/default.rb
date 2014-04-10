@@ -8,12 +8,16 @@
 #
 #
 
-package 'ruby1.9.3'
+require_recipe 'ruby'
+require_recipe 'git'
+require_recipe 'nodejs'
+require_recipe 'redis'
+require_recipe 'mongodb'
+require_recipe 'memcached'
+require_recipe 'mysql::server'
+
 package 'libsasl2-dev'
 package 'libmysqlclient-dev'
-package 'nodejs'
-package 'mongodb'
-package 'redis-server'
 
 gem_package 'bundler'
 

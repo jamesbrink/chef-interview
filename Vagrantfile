@@ -22,8 +22,6 @@ Vagrant.configure('2') do |config|
     chef.add_recipe "git"
     chef.add_recipe 'build-essential'
 
-    chef.add_recipe 'mysql::server'
-    chef.add_recipe 'memcached'
     chef.add_recipe 'app_alpha'
     chef.add_recipe 'app_beta'
 
