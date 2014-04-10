@@ -17,16 +17,23 @@ package 'redis-server'
 
 gem_package 'bundler'
 
+user 'liftopian' do
+  comment 'Used to run liftopia applications'
+  home '/apps'
+  shell '/bin/false'
+  system true
+end
+
 directory '/apps' do
-  owner 'vagrant'
-  group 'vagrant'
+  owner 'liftopian'
+  group 'liftopian'
   action :create
-  mode 00774
+  mode 00775
 end
 
 deploy_revision '/apps/alpha' do
-  user 'vagrant'
-  group 'vagrant'
+  user 'liftopian'
+  group 'liftopian'
   repo 'https://github.com/liftopia/myInterview.git'
   migrate true
   migration_command 'bundle exec rake db:migrate'
@@ -52,4 +59,3 @@ deploy_revision '/apps/alpha' do
   restart_command 'bundle exec rackup -D -P ./tmp/pids/rack.pid'
 end
 
-user 'liftopian'
