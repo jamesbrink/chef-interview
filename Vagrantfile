@@ -21,7 +21,9 @@ Vagrant.configure('2') do |config|
     chef.add_recipe "vim"
     chef.add_recipe "git"
     chef.add_recipe 'build-essential'
+    chef.add_recipe 'supervisor'
 
+    # applications that should be deployed
     chef.add_recipe 'app_alpha'
     chef.add_recipe 'app_beta'
 
