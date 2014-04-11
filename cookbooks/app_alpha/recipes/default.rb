@@ -15,6 +15,7 @@ require_recipe 'redis'
 require_recipe 'mongodb'
 require_recipe 'memcached'
 require_recipe 'mysql::server'
+require_recipe 'supervisor'
 
 # TODO could be put into mysql recipe - mysql::client-dev?
 package 'libmysqlclient-dev'
@@ -36,31 +37,27 @@ directory '/apps' do
   mode 00775
 end
 
-deploy_revision '/apps/alpha' do
+#deploy_revision '/apps/alpha' do
+deploy '/apps/alpha' do
   user 'liftopian'
   group 'liftopian'
   repo 'https://github.com/liftopia/myInterview.git'
   migrate true
   migration_command 'bundle exec rake db:migrate'
-  symlinks {}
+  symlinks ({"config/unicorn.rb" => "config/unicorn.rb", "config/database.yml" => "config/database.yml"})
   before_migrate do
     Dir.chdir(release_path) do
       directory "/apps/alpha/shared/config"
       directory "/apps/alpha/shared/log"
       directory "/apps/alpha/shared/pids"
       cookbook_file "/apps/alpha/shared/config/database.yml"
+      cookbook_file "/apps/alpha/shared/config/unicorn.rb"
+      cookbook_file "/etc/supervisor/conf.d/alpha.conf"
       system('bundle --deployment --path /var/tmp/bundles')
       system('mysqladmin create my_interview_development || echo "Already Created"')
     end
   end
-  before_restart do
-    Dir.chdir(release_path) do
-      Dir.entries('tmp/pids').each do |pid|
-        system("kill -9 `cat tmp/pids/#{pid}`") unless pid =~ /^\.+$/
-      end
-    end
-  end
 
-  restart_command 'bundle exec rackup -D -P ./tmp/pids/rack.pid'
+  restart_command 'supervisorctl reread && supervisorctl update && supervisorctl restart alpha'
 end
 

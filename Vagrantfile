@@ -6,8 +6,8 @@ Vagrant.configure('2') do |config|
   config.vm.box = "precise64"
   config.vm.box_url = "http://grahamc.com/vagrant/ubuntu-12.04-omnibus-chef.box"
 
-  config.vm.network :forwarded_port, :guest => 9292, :host => 8901
-  config.vm.network :forwarded_port, :guest => 9293, :host => 8902
+  config.vm.network :forwarded_port, :guest => 8901, :host => 8901
+  config.vm.network :forwarded_port, :guest => 8902, :host => 8902
 
   config.ssh.forward_agent = true
 
